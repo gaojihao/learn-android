@@ -1,12 +1,14 @@
 package com.lizhi1026.study.learn
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    val  TAG = "MainActivity"
     /**
      * Activity创建时的回调方法，用于初始化Activity的界面和相关设置
      *
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        Log.d(TAG, "onCreate: Activity创建，初始化完成");
     }
 
     /**
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onStop() {
         super.onStop()
+        Log.d(TAG, "onStop");
     }
 
     /**
@@ -44,6 +48,7 @@ class MainActivity : AppCompatActivity() {
      * 需要先调用父类的onDestroy方法以确保正常的生命周期处理
      */
     override fun onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy()
     }
 
@@ -57,6 +62,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onStart() {
         super.onStart()
+        Log.d(TAG, "onStart");
     }
 
     /**
@@ -69,6 +75,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume");
     }
 
     /**
@@ -78,6 +85,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
+        Log.d(TAG, "onPause");
     }
 
     /**
@@ -87,6 +95,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onRestart() {
         super.onRestart()
+        Log.d(TAG, "onRestart");
     }
 
     /**
@@ -96,6 +105,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState");
     }
 
     /**
@@ -106,6 +116,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        Log.d(TAG, "onSaveInstanceState");
     }
 
     /**
@@ -118,6 +129,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
+        Log.d(TAG, "onUserLeaveHint");
     }
 
     /**
@@ -149,15 +161,17 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        Log.d(TAG, "onAttachedToWindow");
     }
 
     /**
-     * 当视图从窗口中分离时调用此方法。
+     * 当视图从窗口中分离时调用此方法。 View级别的生命周期方法 适合放置一些清理View的逻辑
      * 这是View生命周期中的一个重要回调方法，通常用于清理资源或取消注册监听器。
      * 注意：此方法会调用父类的onDetachedFromWindow()方法，确保继承链上的所有清理逻辑都能正常执行。
      */
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        Log.d(TAG, "onDetachedFromWindow");
     }
 
     /**
@@ -167,6 +181,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
+        Log.d(TAG, "onWindowFocusChanged");
     }
 
     /**
@@ -175,6 +190,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
+        Log.d(TAG, "onConfigurationChanged");
     }
 
     /**
@@ -184,6 +200,7 @@ class MainActivity : AppCompatActivity() {
     */
     override fun onUserInteraction() {
         super.onUserInteraction()
+        Log.d(TAG, "onUserInteraction");
     }
 
 
