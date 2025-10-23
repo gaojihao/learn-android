@@ -1,3 +1,9 @@
+/**
+ * 文件：TaskListFragment.kt
+ * 简介：任务列表界面 Fragment
+ * 关键职责：展示任务列表、选择当前任务
+ * 相关组件：TaskListViewModel、Room、布局 activity_task_list
+ */
 package com.lizhi1026.study.learn.ui.tabs
 
 import android.Manifest
@@ -44,11 +50,18 @@ class TaskListFragment : Fragment() {
         }
     }
 
+    /**
+     * 创建并返回任务列表的根视图
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ActivityTaskListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /**
+     * 初始化 RecyclerView 与适配器，订阅任务列表并渲染
+     * 同时处理新增任务的浮动按钮点击事件
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,11 +93,18 @@ class TaskListFragment : Fragment() {
         }
     }
 
+    /**
+     * 销毁视图绑定以避免泄漏
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /**
+     * 启动指定任务并检查 Android 13+ 通知权限
+     * 无权限时先申请，成功后继续启动计时会话
+     */
     private fun startWithPermission(task: Task) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (requireContext().checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
@@ -102,15 +122,24 @@ private class TaskAdapter(
     val onToggle: (Task) -> Unit,
     val onStart: (Task) -> Unit,
 ) : ListAdapter<Task, TaskViewHolder>(DIFF) {
+    /**
+     * 创建任务项的 ViewHolder
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
+    /**
+     * 绑定列表项数据与点击事件
+     */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(getItem(position), onToggle, onStart)
     }
 
     companion object {
+        /**
+         * 定义任务列表的 Diff 规则
+         */
         val DIFF = object : DiffUtil.ItemCallback<Task>() {
             override fun areItemsTheSame(oldItem: Task, newItem: Task) = oldItem.id == newItem.id
             override fun areContentsTheSame(oldItem: Task, newItem: Task) = oldItem == newItem
@@ -119,6 +148,9 @@ private class TaskAdapter(
 }
 
 private class TaskViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
+    /**
+     * 渲染任务项的标题、描述、优先级与统计，并绑定按钮点击
+     */
     fun bind(t: Task, onToggle: (Task) -> Unit, onStart: (Task) -> Unit) {
         binding.tvTitle.text = t.title
         if (t.description.isNotEmpty()) {

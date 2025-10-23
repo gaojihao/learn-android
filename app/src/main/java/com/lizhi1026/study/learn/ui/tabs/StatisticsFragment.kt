@@ -1,3 +1,9 @@
+/**
+ * 文件：StatisticsFragment.kt
+ * 简介：统计界面 Fragment
+ * 关键职责：展示会话与任务统计数据
+ * 相关组件：StatisticsViewModel、Room、布局 activity_statistics
+ */
 package com.lizhi1026.study.learn.ui.tabs
 
 import android.os.Bundle
@@ -20,11 +26,17 @@ class StatisticsFragment : Fragment() {
 
     private val vm: StatisticsViewModel by viewModels()
 
+    /**
+     * 创建并返回统计页面根视图
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ActivityStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /**
+     * 初始化时间范围按钮，订阅统计摘要并渲染到 UI
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,6 +56,9 @@ class StatisticsFragment : Fragment() {
         }
     }
 
+    /**
+     * 销毁视图绑定以避免泄漏
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

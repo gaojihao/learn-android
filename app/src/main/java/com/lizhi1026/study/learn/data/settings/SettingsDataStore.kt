@@ -1,3 +1,9 @@
+/**
+ * 文件：SettingsDataStore.kt
+ * 简介：设置存储
+ * 关键职责：偏好项的读取与更新（DataStore）
+ * 相关组件：ViewModel、UI、DataStore
+ */
 package com.lizhi1026.study.learn.data.settings
 
 import android.content.Context
@@ -27,6 +33,10 @@ class SettingsDataStore(private val context: Context) {
         val theme = stringPreferencesKey("theme")
     }
 
+    /**
+     * 观察设置流
+     * 将 DataStore 中的偏好键映射为领域模型 Settings
+     */
     fun observe(): Flow<Settings> = store.data.map { p ->
         Settings(
             workDurationMinutes = p[Keys.workDurationMinutes] ?: 25,
@@ -39,6 +49,10 @@ class SettingsDataStore(private val context: Context) {
         )
     }
 
+    /**
+     * 更新设置
+     * @param block 接收当前设置并返回新的设置值
+     */
     suspend fun update(block: (Settings) -> Settings) {
         store.edit { p ->
             val cur = observeOnce()
@@ -53,5 +67,8 @@ class SettingsDataStore(private val context: Context) {
         }
     }
 
+    /**
+     * 仅观察一次当前设置（用于写入时读取最新值）
+     */
     private suspend fun observeOnce(): Settings = observe().first()
 }

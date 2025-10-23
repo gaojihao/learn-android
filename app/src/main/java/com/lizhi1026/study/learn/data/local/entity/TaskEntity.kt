@@ -1,3 +1,9 @@
+/**
+ * 文件：TaskEntity.kt
+ * 简介：Room 实体
+ * 关键职责：定义任务数据表结构与字段
+ * 相关组件：Room、Converters、TaskDao
+ */
 package com.lizhi1026.study.learn.data.local.entity
 
 import androidx.room.Entity

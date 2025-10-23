@@ -1,3 +1,9 @@
+/**
+ * 文件：SettingsFragment.kt
+ * 简介：设置界面 Fragment
+ * 关键职责：展示与编辑用户偏好设置
+ * 相关组件：SettingsViewModel、SettingsDataStore、布局 activity_settings
+ */
 package com.lizhi1026.study.learn.ui.tabs
 
 import android.os.Bundle
@@ -20,11 +26,20 @@ class SettingsFragment : Fragment() {
 
     private val vm: SettingsViewModel by viewModels()
 
+    /**
+     * 负责创建并返回设置界面的根视图
+     * 使用 ViewBinding 进行安全的视图访问
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ActivitySettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /**
+     * 注册设置项状态订阅，并处理“保存”按钮点击
+     * - 通过 repeatOnLifecycle 在 STARTED 期间收集状态
+     * - 点击保存时读取输入框和开关状态并写入 DataStore
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,6 +65,9 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    /**
+     * 将设置值渲染到输入框和开关控件
+     */
     private fun renderSettings(s: com.lizhi1026.study.learn.domain.model.Settings) {
         binding.etFocusMinutes.setText(s.workDurationMinutes.toString())
         binding.etShortBreakMinutes.setText(s.shortBreakMinutes.toString())
@@ -58,6 +76,9 @@ class SettingsFragment : Fragment() {
         binding.swVibrate.isChecked = s.enableHaptics
     }
 
+    /**
+     * 销毁视图绑定以避免内存泄漏
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

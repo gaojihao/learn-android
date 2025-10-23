@@ -1,3 +1,9 @@
+/**
+ * 文件：NotificationHelper.kt
+ * 简介：通知工具
+ * 关键职责：渠道创建、通知构建/更新
+ * 相关组件：Service、系统通知
+ */
 package com.lizhi1026.study.learn
 
 import android.app.Notification
@@ -17,6 +23,9 @@ object NotificationHelper {
     private const val CHANNEL_NAME = "Pomodoro Timer"
     private const val NOTIFICATION_ID = 1001
 
+    /**
+     * 确保通知渠道存在（Android O+）
+     */
     fun ensureChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -29,6 +38,12 @@ object NotificationHelper {
         }
     }
 
+    /**
+     * 显示或更新进行中的番茄钟通知
+     * @param title 通知标题（当前会话类型与任务）
+     * @param timeText 剩余时间文本
+     * @param running 是否常驻（ongoing）
+     */
     fun showOngoing(context: Context, title: String, timeText: String, running: Boolean) {
         if (!hasNotifPerm(context)) return
         ensureChannel(context)
@@ -51,6 +66,9 @@ object NotificationHelper {
         nm.notify(NOTIFICATION_ID, builder.build())
     }
 
+    /**
+     * 取消番茄钟通知（如会话结束或服务销毁）
+     */
     fun cancel(context: Context) {
         if (!hasNotifPerm(context)) return
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -1,3 +1,9 @@
+/**
+ * 文件：PomodoroService.kt
+ * 简介：前台服务
+ * 关键职责：前台通知、生命周期、与引擎协作
+ * 相关组件：NotificationHelper、PomodoroEngine
+ */
 package com.lizhi1026.study.learn.timer
 
 import android.app.Notification
@@ -30,8 +36,16 @@ class PomodoroService : Service() {
     private val scope = CoroutineScope(Dispatchers.Main)
     private var observeJob: Job? = null
 
+    /**
+     * 绑定无实现（前台服务不支持绑定交互，返回 null）
+     */
     override fun onBind(intent: Intent?): IBinder? = null
 
+    /**
+     * 服务启动入口
+     * 解析 Action 并分派：开始/暂停/继续/停止；必要时启动前台
+     * 返回 START_STICKY 以在被系统杀死后尽量重启
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
@@ -66,6 +80,9 @@ class PomodoroService : Service() {
         return START_STICKY
     }
 
+    /**
+     * 订阅引擎剩余时间，实时更新通知内容
+     */
     private fun startObserving() {
         observeJob?.cancel()
         observeJob = scope.launch {
@@ -80,6 +97,9 @@ class PomodoroService : Service() {
         }
     }
 
+    /**
+     * 服务销毁：取消订阅并移除通知
+     */
     override fun onDestroy() {
         observeJob?.cancel()
         NotificationHelper.cancel(this)
@@ -137,6 +157,10 @@ class PomodoroService : Service() {
         const val ACTION_STOP = "com.lizhi1026.study.learn.timer.ACTION_STOP"
         const val EXTRA_TYPE = "type"
 
+        /**
+         * 启动前台服务并开始指定类型会话
+         * Android 13+ 检查通知权限，权限缺失时以普通服务启动
+         */
         fun startForeground(ctx: Context, type: SessionType) {
             val i = Intent(ctx, PomodoroService::class.java).apply {
                 action = ACTION_START
